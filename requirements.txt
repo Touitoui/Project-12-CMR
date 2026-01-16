@@ -1,3 +1,4 @@
 SQLAlchemy
 argon2-cffi
 pytest
+pyjwt
