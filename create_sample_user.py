@@ -41,7 +41,7 @@ SAMPLE_USERS = [
 
 
 def create_sample_users():
-    DATABASE_URL = "sqlite:///test.db"
+    DATABASE_URL = "sqlite:///epicevents.db"
 
     engine = create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)

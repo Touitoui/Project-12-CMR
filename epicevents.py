@@ -36,8 +36,8 @@ def get_db_session():
     Create and return a database session.
     Modify the database URL according to your setup.
     """
-    # TODO: Update with actual database URL
-    DATABASE_URL = "sqlite:///test.db"
+    # Update with actual database URL
+    DATABASE_URL = "sqlite:///epicevents.db"
 
     engine = create_engine(DATABASE_URL)
     Session = sessionmaker(bind=engine)
