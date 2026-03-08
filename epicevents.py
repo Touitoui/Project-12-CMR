@@ -2,8 +2,15 @@
 """
 Epic Events CRM - Main CLI Entry Point
 """
+import os
 import sys
 import click
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn=os.environ.get("SENTRY_DSN"),
+    traces_sample_rate=1.0,
+)
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -275,6 +282,6 @@ if __name__ == '__main__':
         print("\n\nOperation cancelled by user.")
         sys.exit(1)
     except Exception as e:
-        # sentry_sdk.capture_exception(e)
+        sentry_sdk.capture_exception(e)
         print(f"\nError: {e}\n")
         sys.exit(1)

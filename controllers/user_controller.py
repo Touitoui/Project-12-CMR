@@ -1,4 +1,5 @@
 
+import sentry_sdk
 from models.user import Department, User
 from sqlalchemy.orm import Session
 from utils.permissions import check_permission, require_auth
@@ -14,6 +15,10 @@ class UserController:
 		self.db_session.add(user)
 		self.db_session.commit()
 		self.db_session.refresh(user)
+		sentry_sdk.capture_message(
+			f"Collaborator created: id={user.id}, employee_number={user.employee_number}, department={user.department}",
+			level="info",
+		)
 		return user
 
 	@check_permission(Department.GESTION.value)
@@ -25,6 +30,10 @@ class UserController:
 			setattr(user, key, value)
 		self.db_session.commit()
 		self.db_session.refresh(user)
+		sentry_sdk.capture_message(
+			f"Collaborator updated: id={user.id}, employee_number={user.employee_number}, fields={list(update_data.keys())}",
+			level="info",
+		)
 		return user
 
 	@check_permission(Department.GESTION.value)

@@ -1,3 +1,4 @@
+import sentry_sdk
 from models.contract import Contract
 from models.client import Client
 from models.user import Department
@@ -61,6 +62,10 @@ class ContractController:
 		contract.is_signed = True
 		self.db_session.commit()
 		self.db_session.refresh(contract)
+		sentry_sdk.capture_message(
+			f"Contract signed: id={contract.id}, client_id={contract.client_id}, sales_contact={contract.sales_contact}",
+			level="info",
+		)
 		return contract
 
 	@check_permission(Department.GESTION.value)
