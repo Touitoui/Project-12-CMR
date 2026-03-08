@@ -2,3 +2,6 @@ SQLAlchemy
 argon2-cffi
 pytest
 pyjwt
+click
+rich
+sentry-sdk
