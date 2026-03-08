@@ -12,15 +12,43 @@ Epic Events CRM - Customer Relationship Management System with JWT Authenticatio
 
 ## Installation
 
-1. Install dependencies:
+1. Create and activate a virtual environment:
+```bash
+python -m venv .venv
+```
+```bash
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
+```
+
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Set up your database and create a sample user:
+3. Create your `.env` file from the provided example and fill in your values:
 ```bash
-python create_sample_user.py
+# Windows
+copy .env.example .env
+# macOS / Linux
+cp .env.example .env
 ```
+Then open `.env` and set:
+- `JWT_SECRET_KEY` — a strong random secret used to sign JWT tokens
+- `SENTRY_DSN` — your Sentry DSN for error tracking
+
+4. Initialize the database and create users:
+
+   - **Production / first setup** — create a single Gestion user (required to manage other users via the CLI):
+     ```bash
+     python create_gestion_user.py
+     ```
+   - **Development / testing** — create one sample user per department:
+     ```bash
+     python create_sample_user.py
+     ```
 
 ## Usage
 
