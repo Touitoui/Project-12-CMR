@@ -6,6 +6,9 @@ import jwt
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class TokenManager:
@@ -13,8 +16,9 @@ class TokenManager:
     Manages JWT token creation, validation, and storage.
     """
     
-    # Default secret key - should be overridden with environment variable
-    SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your-secret-key-change-in-production')
+    SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    if not SECRET_KEY:
+        raise EnvironmentError("JWT_SECRET_KEY is not set. Add it to your .env file.")
     ALGORITHM = 'HS256'
     TOKEN_EXPIRATION_HOURS = 24
     TOKEN_FILE = Path.home() / '.epicevents_token'

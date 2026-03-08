@@ -5,3 +5,4 @@ pyjwt
 click
 rich
 sentry-sdk
+python-dotenv
