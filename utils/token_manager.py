@@ -3,7 +3,7 @@ Token management utilities for JWT authentication.
 Handles token creation, validation, and storage.
 """
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -40,8 +40,8 @@ class TokenManager:
             'user_id': user_id,
             'employee_number': employee_number,
             'department': department,
-            'exp': datetime.utcnow() + timedelta(hours=cls.TOKEN_EXPIRATION_HOURS),
-            'iat': datetime.utcnow()
+            'exp': datetime.now(timezone.utc) + timedelta(hours=cls.TOKEN_EXPIRATION_HOURS),
+            'iat': datetime.now(timezone.utc)
         }
         
         token = jwt.encode(payload, cls.SECRET_KEY, algorithm=cls.ALGORITHM)

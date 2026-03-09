@@ -1,7 +1,7 @@
 """
 Authentication controller - handles authentication business logic.
 """
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from models.user import User
 from utils.token_manager import TokenManager
@@ -50,7 +50,7 @@ class AuthController:
             }
         
         # Update last login
-        user.last_login = datetime.utcnow()
+        user.last_login = datetime.now(timezone.utc)
         self.db_session.commit()
         
         # Create JWT token

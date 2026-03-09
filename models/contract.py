@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, validates
 from .base import Base
@@ -24,7 +24,7 @@ class Contract(Base):
     sales_contact = Column(String(100), nullable=False)
     total_amount = Column(Float, nullable=False, default=0.0)
     remaining_amount = Column(Float, nullable=False, default=0.0)
-    creation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    creation_date = Column(DateTime, default=datetime.now(timezone.utc), nullable=False)
     is_signed = Column(Boolean, default=False, nullable=False)
     
     @validates('total_amount')

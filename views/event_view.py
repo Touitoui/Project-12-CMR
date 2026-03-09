@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import click
 from rich.console import Console
 from rich.table import Table

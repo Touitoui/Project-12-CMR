@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy.orm import validates
 from argon2 import PasswordHasher
@@ -40,7 +40,7 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     department = Column(Enum(Department), nullable=False)
-    creation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    creation_date = Column(DateTime, default=datetime.now(timezone.utc), nullable=False)
     last_login = Column(DateTime, nullable=True)
     
     @validates('email')

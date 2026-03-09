@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship, validates
 from .base import Base
@@ -26,8 +26,8 @@ class Client(Base):
     email = Column(String(100), unique=True, nullable=False)
     phone = Column(String(20), nullable=True)
     company_name = Column(String(100), nullable=True)
-    creation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
-    last_update = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    creation_date = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    last_update = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
     sales_contact = Column(String(100), nullable=True) 
     
     @validates('email')
