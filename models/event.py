@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from .base import Base
 
 
@@ -36,6 +36,16 @@ class Event(Base):
     attendees = Column(Integer, nullable=True)
     notes = Column(Text, nullable=True)
     
+    @validates('event_date_end')
+    def validate_event_date_end(self, key, value):
+        if self.event_date_start is not None and value <= self.event_date_start:
+            raise ValueError("Event must end after event starting date.")
+        return value
+    @validates('attendees')
+    def validate_attendees(self, key, value):
+        if value is not None and value <= 0:
+            raise ValueError("Attendees must be a positive value.")
+        return value
     # Relationship to contract 
     contract = relationship("Contract", back_populates="events")
     

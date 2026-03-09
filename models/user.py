@@ -1,5 +1,7 @@
+import re
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Enum
+from sqlalchemy.orm import validates
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 import enum
@@ -41,6 +43,12 @@ class User(Base):
     creation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
     last_login = Column(DateTime, nullable=True)
     
+    @validates('email')
+    def validate_email(self, key, value):
+        if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', value):
+            raise ValueError("Invalid email address")
+        return value
+
     # Password hasher instance
     _ph = PasswordHasher()
     

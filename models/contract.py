@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from .base import Base
 
 
@@ -27,6 +27,20 @@ class Contract(Base):
     creation_date = Column(DateTime, default=datetime.utcnow, nullable=False)
     is_signed = Column(Boolean, default=False, nullable=False)
     
+    @validates('total_amount')
+    def validate_total_amount(self, key, value):
+        if value < 0:
+            raise ValueError("Total amount cannot be negative.")
+        return value
+
+    @validates('remaining_amount')
+    def validate_remaining_amount(self, key, value):
+        if value < 0:
+            raise ValueError("Remaining amount cannot be negative.")
+        if self.total_amount is not None and value > self.total_amount:
+            raise ValueError("Remaining amount cannot exceed total amount.")
+        return value
+
     # Relationships
     client = relationship("Client", back_populates="contracts")
     events = relationship("Event", back_populates="contract", cascade="all, delete-orphan")

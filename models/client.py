@@ -1,6 +1,7 @@
+import re
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from .base import Base
 
 
@@ -29,6 +30,12 @@ class Client(Base):
     last_update = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     sales_contact = Column(String(100), nullable=True) 
     
+    @validates('email')
+    def validate_email(self, key, value):
+        if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', value):
+            raise ValueError("Invalid email address")
+        return value
+
     # Relationships
     contracts = relationship("Contract", back_populates="client", cascade="all, delete-orphan")
     
