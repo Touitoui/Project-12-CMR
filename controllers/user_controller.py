@@ -16,7 +16,7 @@ class UserController:
 		self.db_session.commit()
 		self.db_session.refresh(user)
 		sentry_sdk.capture_message(
-			f"Collaborator created: id={user.id}, employee_number={user.employee_number}, department={user.department}",
+			f"Collaborator created: id={user.id}",
 			level="info",
 		)
 		return user
@@ -31,7 +31,7 @@ class UserController:
 		self.db_session.commit()
 		self.db_session.refresh(user)
 		sentry_sdk.capture_message(
-			f"Collaborator updated: id={user.id}, employee_number={user.employee_number}, fields={list(update_data.keys())}",
+			f"Collaborator updated: id={user.id} fields={list(update_data.keys())}",
 			level="info",
 		)
 		return user

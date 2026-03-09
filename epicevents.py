@@ -69,14 +69,6 @@ def cli(ctx):
     ctx.obj['db'] = db
     ctx.call_on_close(db.close)
 
-    current_user = auth_controller.get_current_user()
-    if current_user:
-        sentry_sdk.set_user({
-            "id": current_user["user_id"],
-            "username": current_user["employee_number"],
-            "department": current_user["department"],
-        })
-
 
 # ---------------------------------------------------------------------------
 # auth
